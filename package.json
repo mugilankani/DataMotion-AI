@@ -1,0 +1,12 @@
+{
+  "name": "datamotion-ai",
+  "version": "0.1.0",
+  "description": "DataMotion-AI is an AI-powered platform that transforms raw data into stunning animated infographic videos",
+  "main": "index.js",
+  "scripts": {
+    "dev": "cd client && npm run dev",
+    "format": "cd client && npm run format"
+  },
+  "author": "",
+  "license": "ISC"
+}
