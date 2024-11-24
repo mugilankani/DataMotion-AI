@@ -13,18 +13,20 @@ export default async function Dashboard() {
 
   const projects = [
     {
-      id: "1",
-      name: "Comparison on GDP and Inflation Rate",
+      id: "987274981273",
+      name: "Comparison on iPhone and Android in India",
       avatar: "https://api.dicebear.com/9.x/glass/svg?seed=Mason",
       status: "COMPLETED",
-      repoLink: "https://github.com/username/ai-assistant",
+      prompt:
+        "Create a graph showing iPhone usage at 30% and Android usage at 70% in India",
     },
     {
-      id: "2",
-      name: "Comparison on temperature and humidity humidity humidity",
+      id: "987274981473",
+      name: "Comparison on windows and linux in India",
       avatar: "https://api.dicebear.com/9.x/glass/svg?seed=Mason",
-      status: "RENDERING",
-      repoLink: "https://github.com/username/weather-app",
+      status: "COMPLETED",
+      prompt:
+        "Create a graph showing windows usage at 30% and linux usage at 70% in India",
     },
   ];
 
