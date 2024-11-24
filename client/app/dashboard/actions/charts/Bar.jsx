@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 
@@ -8,7 +9,7 @@ const colors = {
   secondary: "#33FF57",
   tertiary: "#3357FF",
   quaternary: "#FF33A6",
-  quinary: "#FFD633"
+  quinary: "#FFD633",
 };
 
 const InteractiveBarChart = () => {
@@ -34,15 +35,20 @@ const InteractiveBarChart = () => {
     }
   }, []);
 
-  const maxValue = Math.max(...data.map(item => item.value));
+  const maxValue = Math.max(...data.map((item) => item.value));
   const chartHeight = 300;
   const barWidth = 60;
   const chartWidth = data.length * barWidth + (data.length - 1) * 20;
 
   return (
     <div className="flex flex-col items-center justify-center p-8">
-      <h2 className="text-3xl font-bold mb-6">Interactive Bar Chart</h2>
-      <svg ref={chartRef} width={chartWidth} height={chartHeight + 50} viewBox={`0 0 ${chartWidth} ${chartHeight + 50}`}>
+      <h2 className="mb-6 text-3xl font-bold">Interactive Bar Chart</h2>
+      <svg
+        ref={chartRef}
+        width={chartWidth}
+        height={chartHeight + 50}
+        viewBox={`0 0 ${chartWidth} ${chartHeight + 50}`}
+      >
         {data.map((item, index) => {
           const barHeight = (item.value / maxValue) * chartHeight;
           const x = index * (barWidth + 20);
@@ -63,7 +69,9 @@ const InteractiveBarChart = () => {
                   scale: 1.05,
                   transition: { duration: 0.3 },
                 }}
-                style={{ transformOrigin: `${x + barWidth / 2}px ${chartHeight}px` }}
+                style={{
+                  transformOrigin: `${x + barWidth / 2}px ${chartHeight}px`,
+                }}
               />
               <text
                 x={x + barWidth / 2}

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 
@@ -43,16 +44,17 @@ const InteractiveRadarChart = () => {
     return { x, y };
   };
 
-  const areaPath = data
-    .map((item, index) => {
-      const { x, y } = getCoordinates(index, item.value);
-      return `${index === 0 ? "M" : "L"} ${x} ${y}`;
-    })
-    .join(" ") + "Z";
+  const areaPath =
+    data
+      .map((item, index) => {
+        const { x, y } = getCoordinates(index, item.value);
+        return `${index === 0 ? "M" : "L"} ${x} ${y}`;
+      })
+      .join(" ") + "Z";
 
   return (
     <div className="flex flex-col items-center justify-center p-8">
-      <h2 className="text-3xl font-bold mb-6">Interactive Radar Chart</h2>
+      <h2 className="mb-6 text-3xl font-bold">Interactive Radar Chart</h2>
       <svg
         ref={chartRef}
         width={chartSize}

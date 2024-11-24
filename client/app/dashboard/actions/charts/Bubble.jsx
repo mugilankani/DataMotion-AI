@@ -1,12 +1,21 @@
 import React, { useEffect, useRef } from "react";
+
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 
 // Custom function to generate a color array
 const getColorArray = (length) => {
   const colors = [
-    "#FF5733", "#33FF57", "#3357FF", "#FF33A6", "#FFD633", "#33FFF6", "#FF8C33",
-    "#9B33FF", "#FF3333", "#33FF85"
+    "#FF5733",
+    "#33FF57",
+    "#3357FF",
+    "#FF33A6",
+    "#FFD633",
+    "#33FFF6",
+    "#FF8C33",
+    "#9B33FF",
+    "#FF3333",
+    "#33FF85",
   ];
   return colors.slice(0, length); // Adjust the length of the array
 };
@@ -40,8 +49,13 @@ const InteractiveBubbleChart = () => {
 
   return (
     <div className="flex flex-col items-center justify-center p-8">
-      <h2 className="text-3xl font-bold mb-6">Interactive Bubble Chart</h2>
-      <svg ref={chartRef} width={chartWidth} height={chartHeight} viewBox={`0 0 ${chartWidth} ${chartHeight}`}>
+      <h2 className="mb-6 text-3xl font-bold">Interactive Bubble Chart</h2>
+      <svg
+        ref={chartRef}
+        width={chartWidth}
+        height={chartHeight}
+        viewBox={`0 0 ${chartWidth} ${chartHeight}`}
+      >
         {data.map((item, index) => (
           <g key={item.label}>
             <motion.circle

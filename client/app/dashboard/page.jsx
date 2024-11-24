@@ -1,11 +1,14 @@
-"use Client"
+"use Client";
+
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import InteractivePieChart from "./Graph"
+
 import clsx from "clsx";
 
 import { auth } from "@/lib/auth";
 import DashboardInput from "@/components/dashboard-input";
+
+import InteractivePieChart from "./Graph";
 
 export default async function Dashboard() {
   const session = await auth();

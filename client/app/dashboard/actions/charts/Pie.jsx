@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 
@@ -33,14 +34,16 @@ const InteractivePieChart = () => {
 
   return (
     <div className="flex flex-col items-center justify-center p-8">
-      <h2 className="text-3xl font-bold mb-6">Interactive Pie Chart</h2>
+      <h2 className="mb-6 text-3xl font-bold">Interactive Pie Chart</h2>
       <svg ref={chartRef} width="400" height="400" viewBox="0 0 400 400">
         {data.map((item, index) => {
           const angle = (item.value / total) * 360;
           const endAngle = startAngle + angle;
           const largeArcFlag = angle > 180 ? 1 : 0;
-          const startX = centerX + radius * Math.cos((startAngle * Math.PI) / 180);
-          const startY = centerY + radius * Math.sin((startAngle * Math.PI) / 180);
+          const startX =
+            centerX + radius * Math.cos((startAngle * Math.PI) / 180);
+          const startY =
+            centerY + radius * Math.sin((startAngle * Math.PI) / 180);
           const endX = centerX + radius * Math.cos((endAngle * Math.PI) / 180);
           const endY = centerY + radius * Math.sin((endAngle * Math.PI) / 180);
 
@@ -52,8 +55,10 @@ const InteractivePieChart = () => {
           ].join(" ");
 
           const midAngle = startAngle + angle / 2;
-          const labelX = centerX + (radius + 30) * Math.cos((midAngle * Math.PI) / 180);
-          const labelY = centerY + (radius + 30) * Math.sin((midAngle * Math.PI) / 180);
+          const labelX =
+            centerX + (radius + 30) * Math.cos((midAngle * Math.PI) / 180);
+          const labelY =
+            centerY + (radius + 30) * Math.sin((midAngle * Math.PI) / 180);
 
           startAngle = endAngle;
 

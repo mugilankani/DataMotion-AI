@@ -1,13 +1,17 @@
 "use client";
 
-import { submitData } from "@/app/project/[id]/actions/submitData";
 import { useState } from "react";
+
+import { toast } from "sonner";
+
+import { submitData } from "@/app/dashboard/actions/submitData";
 
 export default function DashboardInput() {
   const [inputText, setInputText] = useState("");
   const [uploadedFile, setUploadedFile] = useState(null);
   const [error, setError] = useState("");
   const [responseMessage, setResponseMessage] = useState(""); // New state for displaying API response
+  const [isLoading, setIsLoading] = useState(false); // New state for loader
 
   const handleTextChange = (event) => {
     const value = event.target.value;
@@ -38,6 +42,7 @@ export default function DashboardInput() {
     }
 
     setError(""); // Clear previous errors
+    setIsLoading(true); // Show loader while submitting
 
     try {
       const formData = new FormData();
@@ -49,16 +54,19 @@ export default function DashboardInput() {
       }
 
       // Making the API call (POST request)
-      const {success, message} = submitData(formData)
+      const { success, message } = await submitData(formData); // Wait for the API response
 
       // Check if the API call was successful
       if (success) {
-        console.log(message)
-        setResponseMessage(message)
-      } 
+        toast.success(message);
+        setResponseMessage(message);
+      }
     } catch (error) {
       console.error("Error:", error);
+      toast.error("An error occurred while submitting your data.");
       setError("An error occurred while submitting your data.");
+    } finally {
+      setIsLoading(false); // Hide the loader after submission
     }
   };
 
@@ -71,7 +79,12 @@ export default function DashboardInput() {
   return (
     <>
       <div className="md:h-2/3 lg:w-1/2">
-        <div className="flex flex-col gap-2 overflow-hidden rounded-lg border border-gray-300 text-sm outline outline-2 outline-gray-100">
+        <div className="relative flex flex-col gap-2 overflow-hidden rounded-lg border border-gray-300 text-sm outline outline-2 outline-gray-100">
+          {isLoading && (
+            <div className="absolute left-0 right-0 top-0 flex h-full w-full items-center justify-center bg-white/25 font-semibold backdrop-blur-sm">
+              Generating...
+            </div>
+          )}
           <input
             type="text"
             value={inputText}
@@ -107,7 +120,7 @@ export default function DashboardInput() {
               <button
                 onClick={handleSubmit}
                 className="cursor-pointer items-center rounded-lg bg-black p-1.5"
-                disabled={!inputText.trim() && !uploadedFile} // Disable button if no data is entered or file uploaded
+                disabled={(!inputText.trim() && !uploadedFile) || isLoading} // Disable button if no data is entered, file uploaded, or loading
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -136,11 +149,6 @@ export default function DashboardInput() {
             You can add the data with prompt or upload the files
           </p>
         </div>
-        {responseMessage && (
-          <div className="mt-4 bg-green-200 p-2 text-green-700">
-            <p>{responseMessage}</p>
-          </div>
-        )}
       </div>
     </>
   );

@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from "react";
+
 import { motion } from "framer-motion";
 import { gsap } from "gsap";
 
@@ -32,20 +33,32 @@ const InteractiveLineChart = () => {
     }
   }, []);
 
-  const maxValue = Math.max(...data.map(item => item.value));
+  const maxValue = Math.max(...data.map((item) => item.value));
   const chartWidth = 400;
   const chartHeight = 300;
   const padding = 40;
 
-  const xScale = (index) => (index / (data.length - 1)) * (chartWidth - 2 * padding) + padding;
-  const yScale = (value) => chartHeight - (value / maxValue) * (chartHeight - 2 * padding) - padding;
+  const xScale = (index) =>
+    (index / (data.length - 1)) * (chartWidth - 2 * padding) + padding;
+  const yScale = (value) =>
+    chartHeight - (value / maxValue) * (chartHeight - 2 * padding) - padding;
 
-  const linePath = data.map((item, index) => `${index === 0 ? "M" : "L"} ${xScale(index)} ${yScale(item.value)}`).join(" ");
+  const linePath = data
+    .map(
+      (item, index) =>
+        `${index === 0 ? "M" : "L"} ${xScale(index)} ${yScale(item.value)}`,
+    )
+    .join(" ");
 
   return (
     <div className="flex flex-col items-center justify-center p-8">
-      <h2 className="text-3xl font-bold mb-6">Interactive Line Chart</h2>
-      <svg ref={chartRef} width={chartWidth} height={chartHeight} viewBox={`0 0 ${chartWidth} ${chartHeight}`}>
+      <h2 className="mb-6 text-3xl font-bold">Interactive Line Chart</h2>
+      <svg
+        ref={chartRef}
+        width={chartWidth}
+        height={chartHeight}
+        viewBox={`0 0 ${chartWidth} ${chartHeight}`}
+      >
         <motion.path
           className="line-path"
           d={linePath}
