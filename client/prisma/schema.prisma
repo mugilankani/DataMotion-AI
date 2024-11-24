@@ -13,15 +13,34 @@ model User {
     email         String?   @unique
     emailVerified DateTime?
     image         String?
+
     accounts      Account[]
     sessions      Session[]
 
     currentInferences       Int @default(0)
     maxConcurrentInferences Int @default(1)
 
+    videos        Video[]   @relation("UserVideos")
+
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+
 }
+
+model Video {
+    id            String    @id @default(auto()) @map("_id") @db.ObjectId
+    title         String
+    prompt        String
+    description   String
+    url           String
+    status        String
+    userId        String   @db.ObjectId
+    user          User     @relation("UserVideos", fields: [userId], references: [id], onDelete: Cascade)
+
+    createdAt     DateTime @default(now())
+    updatedAt     DateTime @updatedAt
+}
+
 
 model Account {
     id                String  @id @default(auto()) @map("_id") @db.ObjectId
@@ -64,3 +83,4 @@ model VerificationToken {
 
     @@unique([identifier, token])
 }
+
