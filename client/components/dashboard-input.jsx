@@ -6,6 +6,7 @@ export default function DashboardInput() {
   const [inputText, setInputText] = useState("");
   const [uploadedFile, setUploadedFile] = useState(null);
   const [error, setError] = useState("");
+  const [responseMessage, setResponseMessage] = useState(""); // New state for displaying API response
 
   const handleTextChange = (event) => {
     const value = event.target.value;
@@ -27,20 +28,42 @@ export default function DashboardInput() {
     }
   };
 
-  const handleSubmit = () => {
-    if (!inputText.trim()) {
+  const handleSubmit = async () => {
+    if (!inputText.trim() && !uploadedFile) {
       setError(
-        "Please enter the a valid prompt. You can add the data with prompt or upload the files",
+        "Please enter a valid prompt or upload a file. You can add the data with prompt or upload the files.",
       );
       return;
     }
 
-    // Proceed with handling the text input only
-    console.log("Input Text:", inputText);
-    if (uploadedFile) {
-      console.log("Uploaded File:", uploadedFile.name);
+    setError(""); // Clear previous errors
+
+    try {
+      const formData = new FormData();
+      if (inputText.trim()) {
+        formData.append("text", inputText); // Add text input to FormData
+      }
+      if (uploadedFile) {
+        formData.append("file", uploadedFile); // Add file to FormData if it exists
+      }
+
+      // Making the API call (POST request)
+      const response = await fetch("/api/submitData", {
+        method: "POST",
+        body: formData,
+      });
+
+      // Check if the API call was successful
+      if (response.ok) {
+        const result = await response.json();
+        setResponseMessage(result.message); // Store API response message
+      } else {
+        throw new Error("Failed to submit data.");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      setError("An error occurred while submitting your data.");
     }
-    setError("");
   };
 
   const handleKeyDown = (event) => {
@@ -88,6 +111,7 @@ export default function DashboardInput() {
               <button
                 onClick={handleSubmit}
                 className="cursor-pointer items-center rounded-lg bg-black p-1.5"
+                disabled={!inputText.trim() && !uploadedFile} // Disable button if no data is entered or file uploaded
               >
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -116,6 +140,11 @@ export default function DashboardInput() {
             You can add the data with prompt or upload the files
           </p>
         </div>
+        {responseMessage && (
+          <div className="mt-4 bg-green-200 p-2 text-green-700">
+            <p>{responseMessage}</p>
+          </div>
+        )}
       </div>
     </>
   );

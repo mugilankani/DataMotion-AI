@@ -1,6 +1,7 @@
+"use Client"
 import Link from "next/link";
 import { redirect } from "next/navigation";
-
+import InteractivePieChart from "./Graph"
 import clsx from "clsx";
 
 import { auth } from "@/lib/auth";
@@ -90,6 +91,7 @@ export default async function Dashboard() {
           </p>
         )}
       </div>
+      <InteractivePieChart />
     </div>
   );
 }

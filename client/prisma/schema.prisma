@@ -31,6 +31,8 @@ model Video {
     id            String    @id @default(auto()) @map("_id") @db.ObjectId
     title         String
     prompt        String
+    jsondata      String
+    code          String
     description   String
     url           String
     status        String
