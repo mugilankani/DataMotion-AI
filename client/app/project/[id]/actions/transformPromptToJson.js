@@ -7,7 +7,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // Base directory for chart components
-const baseDir = "/Users/mugilansakthivel/Developer/Big projects/DataMotion-AI/client/components/charts";
+const baseDir = "../../../../components/charts";
 
 // Dynamically generate paths for different chart components
 const componentPaths = {
@@ -43,6 +43,7 @@ const promptTemplatetogenerateJson = PromptTemplate.fromTemplate(
    The output should be structured in a clean and easily usable format:
 
    {{
+  "title": "create a suitable title based on prompt"
   "type": "graph_type", // e.g., bar, line, pie, etc.
   "data": {{
     "labels": ["label1", "label2", "label3", ...],
@@ -70,7 +71,7 @@ const generateGraphResponse = PromptTemplate.fromTemplate(
    Return only the modified component code as a plain string, with no markdown and no other text. Ensure that the component works with client-side rendering by adding the "use client" directive if needed.`
 );
 
-async function generateJson(promptData) {
+export async function generateJson(promptData) {
   try {
     const prompt = await promptTemplatetogenerateJson.format({ prompt: promptData });
     const response = await model.invoke(prompt);
@@ -84,7 +85,7 @@ async function generateJson(promptData) {
   }
 }
 
-async function generateGraph(JsonResponse) {
+export async function generateGraph(JsonResponse) {
   try {
     const graphType = JsonResponse.type.toLowerCase(); // Determine graph type
     const componentCode = componentTemplates[graphType]; // Match to component
@@ -108,10 +109,3 @@ async function generateGraph(JsonResponse) {
     throw error;
   }
 }
-
-// Example usage
-const promptData =
-  "Customer journey: Visitors - 10,000, Signups - 2,000, Purchases - 500, Repeat buyers - 100.";
-generateJson(promptData)
-  .then((jsonResponse) => generateGraph(jsonResponse))
-  .catch((error) => console.error("Error:", error));

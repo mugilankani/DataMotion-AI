@@ -1,5 +1,6 @@
 "use client";
 
+import { submitData } from "@/app/project/[id]/actions/submitData";
 import { useState } from "react";
 
 export default function DashboardInput() {
@@ -48,18 +49,13 @@ export default function DashboardInput() {
       }
 
       // Making the API call (POST request)
-      const response = await fetch("/api/submitData", {
-        method: "POST",
-        body: formData,
-      });
+      const {success, message} = submitData(formData)
 
       // Check if the API call was successful
-      if (response.ok) {
-        const result = await response.json();
-        setResponseMessage(result.message); // Store API response message
-      } else {
-        throw new Error("Failed to submit data.");
-      }
+      if (success) {
+        console.log(message)
+        setResponseMessage(message)
+      } 
     } catch (error) {
       console.error("Error:", error);
       setError("An error occurred while submitting your data.");

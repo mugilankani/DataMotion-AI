@@ -13,36 +13,41 @@ model User {
     email         String?   @unique
     emailVerified DateTime?
     image         String?
-
-    accounts      Account[]
-    sessions      Session[]
-
     currentInferences       Int @default(0)
     maxConcurrentInferences Int @default(1)
-
     videos        Video[]   @relation("UserVideos")
+    graphs        Graph[]   @relation("UserGraphs")
 
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+    createdAt     DateTime  @default(now())
+    updatedAt     DateTime  @updatedAt
+}
 
+model Graph {
+    id          String   @id @default(auto()) @map("_id") @db.ObjectId
+    title       String
+    jsonData    String   // JSON structure for the graph
+    graphCode   String   // Generated graph code
+    type        String   // Graph type (e.g., pie, bar)
+    userId      String   @db.ObjectId
+    user        User     @relation("UserGraphs", fields: [userId], references: [id], onDelete: Cascade)
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 }
 
 model Video {
-    id            String    @id @default(auto()) @map("_id") @db.ObjectId
-    title         String
-    prompt        String
-    jsondata      String
-    code          String
-    description   String
-    url           String
-    status        String
-    userId        String   @db.ObjectId
-    user          User     @relation("UserVideos", fields: [userId], references: [id], onDelete: Cascade)
-
-    createdAt     DateTime @default(now())
-    updatedAt     DateTime @updatedAt
+    id          String   @id @default(auto()) @map("_id") @db.ObjectId
+    title       String
+    prompt      String
+    jsondata    String
+    code        String
+    description String
+    url         String
+    status      String
+    userId      String   @db.ObjectId
+    user        User     @relation("UserVideos", fields: [userId], references: [id], onDelete: Cascade)
+    createdAt   DateTime @default(now())
+    updatedAt   DateTime @updatedAt
 }
-
 
 model Account {
     id                String  @id @default(auto()) @map("_id") @db.ObjectId
