@@ -42,11 +42,12 @@ const promptTemplatetogenerateJson = PromptTemplate.fromTemplate(
 
 // Prompt for generating the final graph component code
 const generateGraphResponse = PromptTemplate.fromTemplate(
-  `Generate the graph using this data "{Json}" and 
-   using this component, insert the data into that component "{Component}". 
+  `const generateGraphResponse = PromptTemplate.fromTemplate(
+  Generate the graph using this data "{Json}" and 
+   using this component, insert the data into that component "{Component}".
    Please ensure you include the necessary import statements for all dependencies like React, useEffect, useRef, motion, gsap, etc.
    Only modify the data part of the component, and do not change any animations or other static elements. 
-   Return only the modified component code as a plain string, with no markdown and no other text.`,
+   Return only the modified component code as a plain string, with no markdown and no other text. Ensure that the component works with client-side rendering by adding the "use client" directive if needed.`,
 );
 
 export async function generateJson(promptData) {
