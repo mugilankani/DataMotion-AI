@@ -20,18 +20,24 @@ async function exportGraphCode() {
 			select: { graphCode: true },
 		});
 
+		const data = graph.graphCode;
+
+		console.log(data);
+
 		if (!graph) {
 			throw new Error(`Graph with ID "${graphId}" not found.`);
 		}
 
-		// Prepare the output path for the JSON file
-		const outputPath = path.join(process.cwd(), "graph-output.json");
+		// Prepare the output path for the JSX file
+		const outputPath = path.join(
+			process.cwd(),
+			"my-video/src",
+			"Chart.jsx"
+		);
 
-		// Stringify the graph data before writing
-		const graphData = JSON.stringify(graph, null, 2);
-
-		// Write the stringified data to the file
-		fs.writeFileSync(outputPath, graphData, "utf8");
+		// Write the graph code directly to the JSX file
+		// Assuming graphCode contains the complete React component code
+		fs.writeFileSync(outputPath, data, "utf8");
 
 		console.log("✅ Graph code exported successfully to:", outputPath);
 	} catch (error) {
