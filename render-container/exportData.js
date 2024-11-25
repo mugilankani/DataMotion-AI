@@ -1,35 +1,47 @@
 import fs from "fs";
 import path from "path";
+import { PrismaClient } from "@prisma/client";
 
-// Placeholder project data
-const projectData = {
-	id: 1,
-	title: "Project 1",
-	description: "This is the first project.",
-	data: [
-		{ id: 1, value: "Data 1.1" },
-		{ id: 2, value: "Data 1.2" },
-	],
-};
+// Initialize Prisma Client
+const prisma = new PrismaClient();
 
-// Function to write data to a JSON file
-function exportProjectData() {
+async function exportGraphCode() {
 	try {
-		// Write the data directly to the root directory
-		const outputPath = path.join(process.cwd(), "video-data.json");
+		// Read graphId from environment variables
+		const graphId = process.env.GRAPH_ID;
 
-		fs.writeFileSync(
-			outputPath,
-			JSON.stringify(projectData, null, 2),
-			"utf8"
-		);
+		if (!graphId) {
+			throw new Error("GRAPH_ID environment variable is not set.");
+		}
 
-		console.log("✅ Data exported successfully to:", outputPath);
+		// Fetch the graph data from the database
+		const graph = await prisma.graph.findUnique({
+			where: { id: graphId },
+			select: { graphCode: true },
+		});
+
+		if (!graph) {
+			throw new Error(`Graph with ID "${graphId}" not found.`);
+		}
+
+		// Prepare the output path for the JSON file
+		const outputPath = path.join(process.cwd(), "graph-output.json");
+
+		// Stringify the graph data before writing
+		const graphData = JSON.stringify(graph, null, 2);
+
+		// Write the stringified data to the file
+		fs.writeFileSync(outputPath, graphData, "utf8");
+
+		console.log("✅ Graph code exported successfully to:", outputPath);
 	} catch (error) {
-		console.error("❌ Error exporting data:", error);
+		console.error("❌ Error exporting graph code:", error);
 		process.exit(1);
+	} finally {
+		// Disconnect the Prisma Client
+		await prisma.$disconnect();
 	}
 }
 
 // Run the export function
-exportProjectData();
+exportGraphCode();

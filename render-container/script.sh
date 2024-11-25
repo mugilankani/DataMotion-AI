@@ -6,7 +6,7 @@ echo "🔄 Exporting project data..."
 node exportData.js
 
 # Check if data export was successful
-if [ ! -f "./video-data.json" ]; then
+if [ ! -f "./graph-output.json" ]; then
     echo "❌ Data export failed - video-data.json not found"
     exit 1
 fi
@@ -32,3 +32,5 @@ cd ..
 node uploadToR2.js
 
 echo "🎉 Process complete!"
+
+sleep 10s
